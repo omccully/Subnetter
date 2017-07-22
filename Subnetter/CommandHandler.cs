@@ -7,24 +7,21 @@ namespace Subnetter
 {
     class CommandHandler
     {
-        public string Command { get; set; }
-
-        public string[] Args
-        {
-            get
-            {
-                return GetArgs(Command);
-            }
-        }
-
-        public static string[] GetArgs(string _Command)
+        /// <summary>
+        /// Parses command with space-separated arguments into argument array. 
+        /// Double quotes can be used to specify arguments that include spaces, and 
+        /// double quotes can be escaped using a backslash (\).
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public static string[] GetArgs(string command)
         {
             List<string> ArgList = new List<string>();
 
             byte QuoteInstance = 0; //0 = not in quote, 1 = in double quotes
             short Index = -1;
             string Current = "";
-            char[] ca = _Command.ToCharArray();
+            char[] ca = command.ToCharArray();
             foreach (char c in ca)
             {
                 Index++;

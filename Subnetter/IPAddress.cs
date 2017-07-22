@@ -24,8 +24,32 @@
                     _Binary.StartsWith("1110") ? "D" :
                     _Binary.StartsWith("1111") ? "E" : null;
             }
-            set
+        }
+
+        public bool IsPrivateClassA
+        {
+            get
             {
+                // Class A private is 10.0.0.0 to 10.255.255.255
+                return IPBytes[0] == 10;
+            }
+        }
+
+        public bool IsPrivateClassB
+        {
+            get
+            {
+                // Class B private is 172.16.0.0 to 172.31.255.255
+                return IPBytes[0] == 172 && (16 <= IPBytes[1] && IPBytes[1] <= 31);
+            }
+        }
+
+        public bool IsPrivateClassC
+        {
+            get
+            {
+                // Class C private is 192.168.0.0 to 192.168.255.255
+                return IPBytes[0] == 192 && IPBytes[1] == 168;
             }
         }
 
@@ -33,25 +57,7 @@
         {
             get
             {
-                if (IPBytes[0] == 10)
-                {
-                    return true;
-                }
-                else if (IPBytes[0] == 172 && IPBytes[1] >= 16 && IPBytes[1] <= 31)
-                {
-                    return true;
-                }
-                else if (IPBytes[0] == 192 && IPBytes[1] == 168)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            set
-            {
+                return IsPrivateClassA || IsPrivateClassB || IsPrivateClassC;
             }
         }
 
@@ -64,10 +70,6 @@
                     _Class == "B" ? new SubnetMask(255, 255, 0, 0) :
                     _Class == "C" ? new SubnetMask(255, 255, 255, 0) :
                     new SubnetMask(0, 0, 0, 0);
-            }
-            set
-            {
-
             }
         }
 
@@ -90,9 +92,6 @@
                 }
                 s += "\nDefault subnet mask: " + DefaultSubnet.DottedBytes;
                 return s;
-            }
-            set
-            {
             }
         }
     }
