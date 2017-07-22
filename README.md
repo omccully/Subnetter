@@ -3,7 +3,7 @@
 A C# CLI program created in 2012 to provide information about a given subnet mask or IPv4 address. Here is a usage example (&gt; is the input prompt):
 
 ~~~
-&gt;?
+>?
 clear
 exit
 ip
@@ -12,7 +12,7 @@ title
 width
 beep
 color
-&gt;sm
+>sm
 SM>255.255.224.0
 Info for 255.255.224.0:
 11111111.11111111.11100000.00000000
@@ -28,7 +28,7 @@ Possible subnet addresses:
         101     NNN.NNN.160.HHH 161-190
         110     NNN.NNN.192.HHH 193-222
         111     NNN.NNN.224.HHH 225-254
-SM&gt;ip
+SM>ip
 IP>10.23.22.1
 Info for 10.23.22.1:
 00001010.00010111.00010110.00000001
@@ -41,11 +41,11 @@ Info for 172.17.1.1:
 Class: B
 Usability: Private
 Default subnet mask: 255.255.0.0
-IP&gt;172.34.52.12
+IP>172.34.52.12
 Info for 172.34.52.12:
 10101100.00100010.00110100.00001100
 Class: B
 Usability: Public
 Default subnet mask: 255.255.0.0
-IP&gt;
+IP>
 ~~~
