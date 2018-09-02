@@ -53,56 +53,113 @@ namespace Subnetter
             }
         }
 
+        public string NetworkPrefix
+        {
+            get
+            {
+                switch(NetworkPrefixLength)
+                {
+                    case 0:
+                        return "";
+                    case 8:
+                        return "NNN.";
+                    case 16:
+                        return "NNN.NNN.";
+                    case 24:
+                        return "NNN.NNN.NNN.";
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+        }
+
+        public string HostSuffix
+        {
+            get
+            {
+                switch (NetworkPrefixLength)
+                {
+                    case 0:
+                        return ".HHH.HHH.HHH";
+                    case 8:
+                        return ".HHH.HHH";
+                    case 16:
+                        return ".HHH";
+                    case 24:
+                        return "";
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+        }
+
+        public int HostsPerSubnet
+        {
+            get
+            {
+                // network address and broadcast address is invalid
+                const int InvalidHostAddressesPerNetwork = 2;
+
+                return (int)Math.Pow(2, 32 - SubnetPrefixLength) - InvalidHostAddressesPerNetwork;
+            }
+        }
+
+        public int SubnetCount
+        {
+            get
+            {
+                return (int)Math.Pow(2, SubnetPrefixLength - NetworkPrefixLength);
+                // don't count it as a subnet if it's a classful mask
+                //return sc == 1 ? 0 : sc; 
+            }
+        }
+
+        Subnetwork[] _subnetworks;
+        public Subnetwork[] Subnetworks
+        {
+            get
+            {
+                if (_subnetworks != null) return _subnetworks;
+
+                _subnetworks = new Subnetwork[SubnetCount];
+
+                for(int i = 0; i < SubnetCount; i++)
+                {
+                    _subnetworks[i] = new Subnetwork(this, i);
+                }
+
+                return _subnetworks;
+            }
+        }
+
+        public int SubnetSpread
+        {
+            get
+            {
+                return (int)Math.Pow(2, Math.Abs(SubnetPrefixLength - NetworkPrefixLength - 8));
+            }
+        }
+
         public string Info
         {
             get
             {
-                int SubnetCount = (int)Math.Pow(2, SubnetPrefixLength - NetworkPrefixLength);
-                if (SubnetCount == 1)
-                    SubnetCount = 0;
-
                 string s = "Info for " + DottedBytes + ":\n" +
                     DottedBinary + "\n" +
                     "Class: " + Class + "\n" +
-                     (Math.Pow(2, 32 - SubnetPrefixLength) - 2).ToString();
+                     HostsPerSubnet.ToString();
 
-
-                if (SubnetCount != 0)
+                if (SubnetCount > 1)
                 {
                     s += " hosts per subnet\n" +
                         SubnetCount.ToString() + " subnetworks\n" +
                     "Possible subnet addresses:";
 
-                    string NetworkPrefix = null;
-                    string HostSuffix = null;
-
-                    if (NetworkPrefixLength == 0)
+                    foreach(Subnetwork subnet in Subnetworks)
                     {
-                        NetworkPrefix = "";
-                        HostSuffix = ".HHH.HHH.HHH";
-                    }
-                    else if (NetworkPrefixLength == 8)
-                    {
-                        NetworkPrefix = "NNN.";
-                        HostSuffix = ".HHH.HHH";
-                    }
-                    else if (NetworkPrefixLength == 16)
-                    {
-                        NetworkPrefix = "NNN.NNN.";
-                        HostSuffix = ".HHH";
-                    }
-                    else if (NetworkPrefixLength == 24)
-                    {
-                        NetworkPrefix = "NNN.NNN.NNN.";
-                        HostSuffix = "";
-                    }
-
-                    int SubnetSpread = (int)Math.Pow(2, Math.Abs(SubnetPrefixLength - NetworkPrefixLength - 8));
-                    for (int i = 0; i < 255; i += SubnetSpread)
-                    {
-                        s += "\n\t" + ToBinary((byte)i).Substring(0, SubnetPrefixLength - NetworkPrefixLength) +
-                            "\t" + NetworkPrefix + i.ToString() + HostSuffix +
-                            "\t" + (i + 1).ToString() + "-" + (i + SubnetSpread - 2).ToString();
+                        s += "\n\t" + subnet.NetworkBits +
+                            "\t" + subnet.ToString() +
+                            "\t" + subnet.FirstHostSubAddress + "-" + subnet.LastHostSubAddress;
                     }
                 }
                 else

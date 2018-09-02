@@ -69,7 +69,7 @@
                 return _Class == "A" ? new SubnetMask(255, 0, 0, 0) :
                     _Class == "B" ? new SubnetMask(255, 255, 0, 0) :
                     _Class == "C" ? new SubnetMask(255, 255, 255, 0) :
-                    new SubnetMask(0, 0, 0, 0);
+                    null;
             }
         }
 
@@ -82,15 +82,10 @@
                    "Class: " + Class + "\n" +
                    "Usability: ";
 
-                if (IsPrivate)
-                {
-                    s += "Private";
-                }
-                else
-                {
-                    s += "Public";
-                }
-                s += "\nDefault subnet mask: " + DefaultSubnet.DottedBytes;
+                s += (IsPrivate ? "Private" : "Public");
+
+                s += "\nDefault subnet mask: " + 
+                    (DefaultSubnet == null ? "N/A" : DefaultSubnet.DottedBytes);
                 return s;
             }
         }

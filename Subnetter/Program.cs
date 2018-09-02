@@ -12,8 +12,7 @@ namespace Subnetter
             ConsoleColor InputForeColor = ConsoleColor.White;
             ConsoleColor OutputBackColor = ConsoleColor.Black;
             ConsoleColor InputBackColor = ConsoleColor.Black;
-            IPAddress ipaddr = new IPAddress();
-            SubnetMask smaddr = new SubnetMask();
+            
             string mode = "";
             string input = null;
             string temp = null;
@@ -82,13 +81,13 @@ namespace Subnetter
                                             if (args[3] == "?")
                                                 WriteColor(ColorList, OutputForeColor, OutputBackColor);
                                             else
-                                                InputForeColor = ReadColor(args[3]);
+                                                InputForeColor = ParseColor(args[3]);
                                             break;
                                         case "BACKGROUND":
                                             if (args[3] == "?")
                                                 WriteColor(ColorList, OutputForeColor, OutputBackColor);
                                             else
-                                                InputBackColor = ReadColor(args[3]);
+                                                InputBackColor = ParseColor(args[3]);
                                             break;
                                         case "?":
                                             WriteColor("foreground\nbackground\n", OutputForeColor, OutputBackColor);
@@ -105,13 +104,13 @@ namespace Subnetter
                                             if (args[3] == "?")
                                                 WriteColor(ColorList, OutputForeColor, OutputBackColor);
                                             else
-                                                OutputForeColor = ReadColor(args[3]);
+                                                OutputForeColor = ParseColor(args[3]);
                                             break;
                                         case "BACKGROUND":
                                             if (args[3] == "?")
                                                 WriteColor(ColorList, OutputForeColor, OutputBackColor);
                                             else
-                                                OutputBackColor = ReadColor(args[3]);
+                                                OutputBackColor = ParseColor(args[3]);
                                             break;
                                         case "?":
                                             WriteColor("foreground\nbackground\n", OutputForeColor, OutputBackColor);
@@ -136,11 +135,12 @@ namespace Subnetter
                             switch (mode)
                             {
                                 case "IP":
-                                    ipaddr.SetAddress(args[0]);
+
+                                    IPAddress ipaddr = new IPAddress(args[0]);
                                     WriteColor(ipaddr.Info + "\n", OutputForeColor, OutputBackColor);
                                     break;
                                 case "SM":
-                                    smaddr.SetAddress(args[0]);
+                                    SubnetMask smaddr = new SubnetMask(args[0]);
                                     WriteColor(smaddr.Info + "\n", OutputForeColor, OutputBackColor);
                                     break;
                                 default:
@@ -179,7 +179,7 @@ namespace Subnetter
             set { }
         }
 
-        static ConsoleColor ReadColor(string s)
+        static ConsoleColor ParseColor(string s)
         {
             s = s.ToLower();
 

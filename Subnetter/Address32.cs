@@ -16,7 +16,7 @@ namespace Subnetter
         }
         public Address32() {  }
 
-        public void SetAddress(string DottedDecimal)
+        void SetAddress(string DottedDecimal)
         {
             if (DottedDecimal.Split('.').Length == 4)
             {
