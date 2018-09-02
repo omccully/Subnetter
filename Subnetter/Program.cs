@@ -21,7 +21,7 @@ namespace Subnetter
             {
                 try
                 {
-                    WriteColor(mode + ">", InputForeColor, InputBackColor);
+                    WriteColor(mode + "> ", InputForeColor, InputBackColor);
                     input = Console.ReadLine().Trim();
                     temp = input.ToUpper().Trim();
 
