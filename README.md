@@ -8,6 +8,7 @@ A C# CLI program created in 2012 to provide information about a given subnet mas
 
 Here is a text output showing more usage (&gt; is the input prompt):
 
+```
 >?
 clear
 exit
@@ -53,4 +54,5 @@ Class: B
 Usability: Public
 Default subnet mask: 255.255.0.0
 IP>
-~~~
+```
+
