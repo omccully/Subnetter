@@ -1,8 +1,13 @@
 # Subnetter
 
-A C# CLI program created in 2012 to provide information about a given subnet mask or IPv4 address. Here is a usage example (&gt; is the input prompt):
+A C# CLI program created in 2012 to provide information about a given subnet mask or IPv4 address. 
 
-~~~
+## Demo
+
+![Demo](/Demo/demo.gif)
+
+Here is a text output showing more usage (&gt; is the input prompt):
+
 >?
 clear
 exit
